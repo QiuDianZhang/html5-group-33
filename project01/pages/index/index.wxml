@@ -1,0 +1,71 @@
+<view class="container">
+  
+  <view class="timer-card {{isTiming ? 'timing-active' : ''}}">
+    <view class="timer-header">
+      <text class="timer-title">{{isTiming ? '正在沉浸阅读...' : '准备好读书了吗？'}}</text>
+      <view class="timer-display">{{timerStr}}</view>
+    </view>
+    <button class="timer-btn {{isTiming ? 'btn-stop' : 'btn-start'}}" bindtap="toggleTimer">
+      {{isTiming ? '停止计时 & 打卡' : '开始读书计时'}}
+    </button>
+  </view>
+
+  <!-- 搜索栏与功能区 -->
+  <view class="action-bar">
+    <view class="search-bar">
+      <icon type="search" size="14" color="#999"></icon>
+      <input placeholder="搜索书名/作者" bindinput="onSearchInput" value="{{searchKey}}" confirm-type="search"/>
+      <icon wx:if="{{searchKey}}" type="clear" size="14" color="#ccc" bindtap="clearSearch"></icon>
+    </view>
+    
+    <!-- 设置按钮 -->
+    <view class="icon-btn setting-btn" bindtap="showSettings">
+      <text>⚙️</text>
+    </view>
+  </view>
+
+  <!-- 日历入口 (指向 ca) -->
+  <view class="calendar-entry" bindtap="goCalendar">
+    <view class="entry-text">
+      <text class="entry-title">读书日历 📅</text>
+      <text class="entry-desc">点击查看每日阅读时长统计</text>
+    </view>
+    <view class="entry-arrow">></view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <view class="tabs">
+    <view class="tab {{currentTab=='all'?'active':''}}" bindtap="switchTab" data-type="all">全部</view>
+    <view class="tab {{currentTab=='want'?'active':''}}" bindtap="switchTab" data-type="want">想读</view>
+    <view class="tab {{currentTab=='reading'?'active':''}}" bindtap="switchTab" data-type="reading">在读</view>
+    <view class="tab {{currentTab=='read'?'active':''}}" bindtap="switchTab" data-type="read">已读</view>
+  </view>
+
+  <!-- 书籍列表 -->
+  <scroll-view scroll-y class="book-list">
+    <block wx:if="{{displayBooks.length > 0}}">
+      <view class="book-item" wx:for="{{displayBooks}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <image 
+  class="book-cover" 
+  src="{{item.cover || '/assets/default-cover.png'}}" 
+  mode="aspectFill" 
+  binderror="onImageError" 
+  data-index="{{index}}"
+></image>
+        <view class="info">
+          <view class="info-top">
+            <text class="title">{{item.title}}</text>
+            <view class="status-tag status-{{item.status}}">
+              {{item.status === 'want' ? '想读' : (item.status === 'reading' ? '在读' : '已读')}}
+            </view>
+          </view>
+          <text class="author">{{item.author}}</text>
+          <text class="category" wx:if="{{item.category}}"># {{item.category}}</text>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="empty-tip">没有找到相关书籍</view>
+  </scroll-view>
+
+  <view class="add-btn" bindtap="goAdd">+</view>
+</view>

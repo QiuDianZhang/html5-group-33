@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="header">
+    <view class="month-selector">
+      <view class="arrow" bindtap="prevMonth">◀</view>
+      <text class="current-date">{{year}}年 {{month}}月</text>
+      <view class="arrow" bindtap="nextMonth">▶</view>
+    </view>
+    <view class="heatmap-legend">
+      <text>0</text>
+      <view class="level l0"></view>
+      <view class="level l1"></view>
+      <view class="level l2"></view>
+      <view class="level l3"></view>
+      <text>60m+</text>
+    </view>
+  </view>
+
+  <view class="calendar-board">
+    <view class="week-header">
+      <view class="week-item">日</view>
+      <view class="week-item">一</view>
+      <view class="week-item">二</view>
+      <view class="week-item">三</view>
+      <view class="week-item">四</view>
+      <view class="week-item">五</view>
+      <view class="week-item">六</view>
+    </view>
+
+    <view class="days-grid">
+      <view class="day-cell empty" wx:for="{{emptyGrids}}" wx:key="*this"></view>
+      <view class="day-cell {{item.level > 0 ? 'active' : ''}}" 
+            wx:for="{{days}}" 
+            wx:key="date"
+            bindtap="showTip"
+            data-minutes="{{item.minutes}}"
+            data-day="{{item.day}}">
+        <view class="day-content level-{{item.level}}">
+          <text class="day-num">{{item.day}}</text>
+          <!-- 显示小图标或分钟数 -->
+          <text class="day-count" wx:if="{{item.minutes > 0}}">{{item.minutes}}m</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="summary">
+    <text>本月专注时长：<text style="color:#07c160;font-weight:bold;">{{monthTotalMinutes}}</text> 分钟</text>
+  </view>
+</view>

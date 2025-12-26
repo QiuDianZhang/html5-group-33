@@ -1,0 +1,77 @@
+<view class="form-container">
+  
+  <view class="cover-upload" bindtap="chooseCover">
+    <image wx:if="{{cover}}" src="{{cover}}" mode="aspectFill" class="cover-img"></image>
+    <view wx:else class="upload-placeholder">
+      <text class="plus">+</text>
+      <text>点击上传封面</text>
+    </view>
+  </view>
+
+  <view class="form-item">
+    <text class="label">书名 <text class="required">*</text></text>
+    <!-- 限制50字 -->
+    <input class="input" maxlength="50" placeholder="请输入书名（必填）" value="{{title}}" bindinput="onInput" data-field="title" />
+  </view>
+
+  <view class="form-item">
+    <text class="label">作者</text>
+    <!-- 限制30字 -->
+    <input class="input" maxlength="30" placeholder="请输入作者（默认：佚名）" value="{{author}}" bindinput="onInput" data-field="author" />
+  </view>
+
+  <view class="form-item">
+    <text class="label">分类</text>
+    <!-- 限制10字 -->
+    <input class="input" maxlength="10" placeholder="例如：小说（默认：未分类）" value="{{category}}" bindinput="onInput" data-field="category" />
+  </view>
+
+ <view class="form-row">
+    <view class="form-item half">
+      <text class="label">当前页数</text>
+      <!-- 初始为空，提示默认为0 -->
+      <input class="input" type="number" maxlength="5" placeholder="默认为 0" value="{{currentPage}}" bindinput="onInput" data-field="currentPage" />
+    </view>
+    <view class="form-item half">
+      <text class="label">总页数</text>
+      <!-- 初始为空，提示默认为0 -->
+      <input class="input" type="number" maxlength="5" placeholder="默认为 0" value="{{totalPages}}" bindinput="onInput" data-field="totalPages" />
+    </view>
+  </view>
+
+  <view class="form-item">
+    <text class="label">状态</text>
+    <radio-group bindchange="onStatusChange" class="radio-group">
+      <label class="radio" wx:for="{{statusItems}}" wx:key="value">
+        <radio value="{{item.value}}" checked="{{item.value === status}}" color="#07c160"/>{{item.name}}
+      </label>
+    </radio-group>
+  </view>
+
+  <view class="form-item">
+    <text class="label">评分</text>
+    <view class="star-rating">
+      <!-- 循环生成 5 颗星 -->
+      <view 
+        class="star-item" 
+        wx:for="{{[1, 2, 3, 4, 5]}}" 
+        wx:key="*this" 
+        bindtap="handleStarClick" 
+        data-score="{{item}}">
+        <!-- 如果当前星星的序号 <= 已选分数，显示实心，否则显示空心 -->
+        <text class="star-icon {{item <= rating ? 'active' : ''}}">★</text>
+      </view>
+      <text class="rating-text">{{rating}} 星</text>
+    </view>
+  </view>
+
+  <view class="form-item vertical">
+    <text class="label">读书笔记</text>
+    <!-- 限制1000字 -->
+    <textarea class="textarea" maxlength="1000" placeholder="写点什么..." value="{{notes}}" bindinput="onInput" data-field="notes"></textarea>
+    <!-- 字数统计 -->
+    <view class="word-count">{{notes.length}}/1000</view>
+  </view>
+
+  <button class="save-btn" bindtap="save">保存</button>
+</view>

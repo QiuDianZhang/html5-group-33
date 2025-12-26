@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="card">
+    <view class="header-section">
+      <image class="detail-cover" src="{{book.cover || '/assets/default-cover.png'}}" mode="aspectFill"></image>
+      <view class="header-info">
+        <text class="title">{{book.title}}</text>
+        <view class="tags-row">
+           <text class="status-badge status-{{book.status}}">{{book.statusText}}</text>
+           <text class="category-badge" wx:if="{{book.category}}">{{book.category}}</text>
+        </view>
+        <text class="author">作者：{{book.author || '未知'}}</text>
+            <!-- ... -->
+    <view class="row">
+      <text class="label">评分：</text>
+      <view class="static-stars">
+        <block wx:for="{{[1, 2, 3, 4, 5]}}" wx:key="*this">
+          <text class="star-icon-small {{item <= book.rating ? 'active' : ''}}">★</text>
+        </block>
+        <text class="rating-value-text">{{book.rating}}分</text>
+      </view>
+    </view>
+      </view>
+    </view>
+    
+    <view class="progress-section" wx:if="{{book.displayTotalPages > 0}}">
+      <view class="progress-info">
+        <text class="label">阅读进度</text>
+        <text class="value">{{book.displayCurrentPage}}页 / {{book.displayTotalPages}}页 ({{book.percent}}%)</text>
+      </view>
+      <progress percent="{{book.percent}}" border-radius="5" color="#07c160" active stroke-width="6" />
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="notes-section">
+      <text class="section-title">读书笔记</text>
+      <view class="notes-content">
+        {{book.notes || '暂无笔记，点击编辑添加...'}}
+      </view>
+    </view>
+    
+    <view class="time">最后更新：{{book.updateTime}}</view>
+  </view>
+
+  <view class="action-area">
+    <button class="btn edit" bindtap="goEdit">编辑</button>
+    <button class="btn delete" bindtap="handleDelete">删除</button>
+  </view>
+</view>
